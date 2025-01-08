@@ -30,11 +30,19 @@ export class ComputeStack extends cdk.Stack {
           effect: iam.Effect.ALLOW,
           actions: [
             's3:GetObject',
-            's3:PutObject',
             's3:DeleteObject'
           ],
           resources: [
-            `arn:aws:s3:::${photosBucketName}/*`
+            `arn:aws:s3:::${photosBucketName}/input/*`
+          ]
+        }),
+        new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          actions: [
+            's3:PutObject',
+          ],
+          resources: [
+            `arn:aws:s3:::${photosBucketName}/output/*`
           ]
         })
       ],

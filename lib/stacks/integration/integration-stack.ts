@@ -1,8 +1,8 @@
-import * as cdk from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-import * as s3 from 'aws-cdk-lib/aws-s3';
-import * as s3n from 'aws-cdk-lib/aws-s3-notifications';
-import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as cdk from "aws-cdk-lib";
+import { Construct } from "constructs";
+import * as s3 from "aws-cdk-lib/aws-s3";
+import * as s3n from "aws-cdk-lib/aws-s3-notifications";
+import * as lambda from "aws-cdk-lib/aws-lambda";
 
 interface IntegrationStackProps extends cdk.StackProps {
   photosBucket: s3.IBucket;
@@ -15,6 +15,10 @@ export class IntegrationStack extends cdk.Stack {
 
     const { photosBucket, filterLambda } = props;
 
-    photosBucket.addEventNotification(s3.EventType.OBJECT_CREATED, new s3n.LambdaDestination(filterLambda), { prefix: 'input/' })
+    photosBucket.addEventNotification(
+      s3.EventType.OBJECT_CREATED,
+      new s3n.LambdaDestination(filterLambda),
+      { prefix: "input/" }
+    );
   }
 }
