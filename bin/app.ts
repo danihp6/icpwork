@@ -9,6 +9,6 @@ const context = new Context();
 const computeStack = new ComputeStack(app, context.getFullName('ComputeStack'));
 const databaseStack = new DatabaseStack(app, context.getFullName('DatabaseStack'));
 new IntegrationStack(app, context.getFullName('IntegrationStack'), {
-  photosBucket: databaseStack.photosBucket,
-  filterLambda: computeStack.filterLambda
+  textsBucket: databaseStack.textsBucket,
+  countLambda: computeStack.countLambda
 });

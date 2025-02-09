@@ -5,14 +5,14 @@ import { Context } from '../../context';
 import { CONSTANTS } from '../../constants';
 
 export class DatabaseStack extends cdk.Stack {
-  public readonly photosBucket: s3.Bucket;
+  public readonly textsBucket: s3.Bucket;
 
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
     const context = new Context();
 
-    this.photosBucket = new s3.Bucket(this, 'PhotosBucket', {
-      bucketName: context.getFullName(CONSTANTS.phothosBucketName),
+    this.textsBucket = new s3.Bucket(this, 'bucket', {
+      bucketName: context.getFullName(CONSTANTS.textsBucketName),
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
   }

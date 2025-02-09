@@ -11,20 +11,23 @@ import * as logs from 'aws-cdk-lib/aws-logs';
 const lambdasPath = path.join(__dirname, '../../src/lambdas');
 
 export class ComputeStack extends cdk.Stack {
-  public readonly filterLambda: lambda.IFunction;
+  public readonly countLambda: lambda.IFunction;
 
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     const context = new Context();
 
-    const photosBucketName = context.getFullName(CONSTANTS.phothosBucketName);
+    const textsBucketName = context.getFullName(CONSTANTS.textsBucketName);
 
-    this.filterLambda = new lambdanodejs.NodejsFunction(this, 'filter', {
-      functionName: context.getFullName('filter'),
-      entry: path.join(lambdasPath, 'filter', 'index.ts'),
+    this.countLambda = new lambdanodejs.NodejsFunction(this, 'count', {
+      functionName: context.getFullName('count'),
+      entry: path.join(lambdasPath, 'count', 'index.ts'),
       runtime: lambda.Runtime.NODEJS_18_X,
       timeout: cdk.Duration.seconds(3),
+      environment: {
+        BUCKET_NAME: textsBucketName
+      },
       initialPolicy: [
         new iam.PolicyStatement({
           effect: iam.Effect.ALLOW,
@@ -33,7 +36,7 @@ export class ComputeStack extends cdk.Stack {
             's3:DeleteObject'
           ],
           resources: [
-            `arn:aws:s3:::${photosBucketName}/input/*`
+            `arn:aws:s3:::${textsBucketName}/input/*`
           ]
         }),
         new iam.PolicyStatement({
@@ -42,7 +45,7 @@ export class ComputeStack extends cdk.Stack {
             's3:PutObject',
           ],
           resources: [
-            `arn:aws:s3:::${photosBucketName}/output/*`
+            `arn:aws:s3:::${textsBucketName}/output/*`
           ]
         })
       ],
